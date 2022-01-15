@@ -24,3 +24,6 @@ hs_err_pid*
 
 # MacOS DS_Store Files
 *.DS_Store
+
+# Intelliji Idea Config
+*.idea
