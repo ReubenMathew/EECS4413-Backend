@@ -27,3 +27,6 @@ hs_err_pid*
 
 # Intelliji Idea Config
 *.idea
+
+# Environment variables
+*.env
