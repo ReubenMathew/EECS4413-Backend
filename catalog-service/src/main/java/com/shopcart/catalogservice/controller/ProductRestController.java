@@ -11,8 +11,11 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductRestController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductRestController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @GetMapping
     public List<Product> getAllProducts() {
