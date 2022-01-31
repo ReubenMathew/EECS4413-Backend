@@ -2,8 +2,9 @@ package com.shopcart.catalogservice.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="products")
@@ -26,7 +27,9 @@ public class Product {
     private @NotBlank float price;
     @Column(name="quantity")
     private @NotBlank int quantity;
-    // TODO(Reuben): Include column for product reviews with a many to one relationship (Review -> Product)
+    @Column(name="review_ids")
+    @ElementCollection
+    private List<Long> review_ids = new ArrayList<Long>();
     // TODO(Reuben): Include column for size, the implementation details of how this field will be stored and indexed is TBD
     // TODO(Reuben): Include column for product image, the implementation details of how this image will be store is TBD
 
@@ -94,4 +97,16 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public void addReview_id(long review_id){
+    	review_ids.add(review_id);
+    }
+
+    public void removeReview_id(long review_id){
+    	review_ids.remove(review_id);
+    }
+
+	public List<Long> getReview_ids() {
+		return review_ids;
+	}
 }
