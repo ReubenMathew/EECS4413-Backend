@@ -1,4 +1,4 @@
-package com.shopcart.catalogservice.entity;
+package com.shopcart.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

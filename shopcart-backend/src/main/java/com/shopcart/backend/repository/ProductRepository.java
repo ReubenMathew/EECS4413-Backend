@@ -1,6 +1,6 @@
-package com.shopcart.catalogservice.repository;
+package com.shopcart.backend.repository;
 
-import com.shopcart.catalogservice.entity.Product;
+import com.shopcart.backend.entity.Product;
 
 import java.util.List;
 
