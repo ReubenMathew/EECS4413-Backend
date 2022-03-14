@@ -1,9 +1,9 @@
-package com.shopcart.catalogservice.controller;
+package com.shopcart.backend.controller;
 
-import com.shopcart.catalogservice.entity.Product;
-import com.shopcart.catalogservice.entity.Review;
-import com.shopcart.catalogservice.repository.ProductRepository;
-import com.shopcart.catalogservice.repository.ReviewRepository;
+import com.shopcart.backend.entity.Product;
+import com.shopcart.backend.entity.Review;
+import com.shopcart.backend.repository.ProductRepository;
+import com.shopcart.backend.repository.ReviewRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

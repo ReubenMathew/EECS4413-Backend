@@ -1,4 +1,4 @@
-package com.shopcart.catalogservice.entity;
+package com.shopcart.backend.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
