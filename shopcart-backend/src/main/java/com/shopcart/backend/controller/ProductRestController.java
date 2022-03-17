@@ -44,19 +44,22 @@ public class ProductRestController {
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
+    public Product addProduct(@RequestBody Product product) {
         productRepository.save(product);
+        return product;
     }
     
     @PutMapping("/{product_id}")
-    public void updateProduct(@PathVariable long product_id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable long product_id, @RequestBody Product product) {
     	if(product_id == product.getId()) productRepository.save(product);
+        return product;
     }
 
     @DeleteMapping("/{product_id}")
-    public void deleteProduct(@PathVariable long product_id) {
+    public Product deleteProduct(@PathVariable long product_id) {
     	Product product = productRepository.findById(product_id).orElse(null);
     	reviewRepository.deleteAllById(product.getReview_ids());
     	productRepository.deleteById(product.getId());
+        return product;
     }
 }
