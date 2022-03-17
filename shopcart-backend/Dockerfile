@@ -7,6 +7,6 @@ RUN mvn -f /home/app/pom.xml -Dmaven.test.skip clean test package
 # Package stage
 FROM openjdk:11-jre-slim
 WORKDIR /app
-COPY --from=build /home/app/target/*.jar catalog-service.jar
+COPY --from=build /home/app/target/*.jar shopcart-backend.jar
 EXPOSE 8080
-CMD ["java", "-jar", "catalog-service.jar"]
+CMD ["java", "-jar", "shopcart-backend.jar"]
