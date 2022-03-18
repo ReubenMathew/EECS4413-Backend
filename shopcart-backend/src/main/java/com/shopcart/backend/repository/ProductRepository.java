@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-	public List<Product> findByProductName(String productName);
-	public List<Product> findByBrand(String brand);
-	public List<Product> findByCategory(String category);
+	List<Product> findByProductName(String productName);
+	List<Product> findByBrand(String brand);
+	List<Product> findByCategory(String category);
 }
