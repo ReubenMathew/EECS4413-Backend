@@ -35,13 +35,13 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public String generateToken(@Valid @RequestBody AuthRequest authRequest) throws Exception {
-//        try {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
-        );
-//        } catch (Exception ex) {
-//            throw new Exception("invalid username/password");
-//        }
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
+            );
+        } catch (Exception ex) {
+            throw new Exception("invalid username/password");
+        }
         return jwtUtils.generateToken(authRequest.getUserName());
     }
 

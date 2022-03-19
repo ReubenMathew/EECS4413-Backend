@@ -29,7 +29,7 @@ public class Product {
     private @NotBlank int quantity;
     @Column(name="review_ids")
     @ElementCollection
-    private List<Long> review_ids = new ArrayList<Long>();
+    private List<Long> review_ids = new ArrayList<>();
     // TODO(Eric): Include column for size, the implementation details of how this field will be stored and indexed is TBD
     // TODO(Reuben): Include column for product image, the implementation details of how this image will be store is TBD
 
