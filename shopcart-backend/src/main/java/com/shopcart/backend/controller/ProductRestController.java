@@ -29,14 +29,18 @@ public class ProductRestController {
     public List<Product> getAllProducts(
     	@RequestParam("name") Optional<String> name,
     	@RequestParam("brand") Optional<String> brand,
-    	@RequestParam("category") Optional<String> category)
+    	@RequestParam("category") Optional<String> category,
+    	@RequestParam("num") Optional<Integer> num)
     {
     	Set<Product> products = new HashSet<>();
     	products.addAll((List<Product>) productRepository.findAll());
     	if(name.isPresent()) products.retainAll(productRepository.findByProductName(name.get()));
     	if(brand.isPresent()) products.retainAll(productRepository.findByBrand(brand.get()));
     	if(category.isPresent()) products.retainAll(productRepository.findByCategory(category.get()));
-        return new ArrayList<>(products);
+    	
+    	List<Product> result = new ArrayList<>(products);
+    	if(num.isPresent() && num.get() < result.size()) return result.subList(0, num.get());
+        return result;
     }
 
     @GetMapping("/{product_id}")

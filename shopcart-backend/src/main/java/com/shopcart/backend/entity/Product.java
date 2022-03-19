@@ -10,6 +10,13 @@ import java.util.List;
 @Table(name="products")
 public class Product {
 
+	private enum Size {
+		XXS(1), XS(2), S(3), M(4), L(5), XL(6), XXL(7);
+		private int value;
+		Size(int value) { this.value = value; }
+		public int getValue() { return value; }
+	}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,10 +36,12 @@ public class Product {
     private @NotBlank int quantity;
     @Column(name="review_ids")
     @ElementCollection
-    private List<Long> review_ids = new ArrayList<>();
-    // TODO(Eric): Include column for size, the implementation details of how this field will be stored and indexed is TBD
-    // TODO(Reuben): Include column for product image, the implementation details of how this image will be store is TBD
-
+    private List<Long> review_ids = new ArrayList<Long>();
+    @Column(name="size")
+    @Enumerated(EnumType.STRING)
+    private Size size;
+    @Column(name="image_url")
+    private String image_url;
 
     public String getProductName() {
         return productName;
@@ -108,5 +117,21 @@ public class Product {
 
 	public List<Long> getReview_ids() {
 		return review_ids;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
 	}
 }
