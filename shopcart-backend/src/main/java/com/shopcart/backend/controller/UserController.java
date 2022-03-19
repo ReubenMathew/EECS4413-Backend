@@ -1,16 +1,15 @@
 package com.shopcart.backend.controller;
 
-import com.shopcart.backend.config.DatabaseUserDetailService;
 import com.shopcart.backend.entity.AuthRequest;
 import com.shopcart.backend.entity.RegistrationRequest;
 import com.shopcart.backend.entity.User;
 import com.shopcart.backend.repository.UserRepository;
 import com.shopcart.backend.util.JWTUtils;
-import org.hibernate.dialect.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,8 +38,13 @@ public class UserController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
             );
-        } catch (Exception ex) {
-            throw new Exception("invalid username/password");
+        } catch (UsernameNotFoundException e) {
+            throw new Exception("Username not found");
+        } catch (BadCredentialsException e) {
+            throw new Exception("Invalid username/password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Authentication error");
         }
         return jwtUtils.generateToken(authRequest.getUserName());
     }
