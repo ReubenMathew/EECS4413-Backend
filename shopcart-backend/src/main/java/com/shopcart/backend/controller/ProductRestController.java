@@ -4,6 +4,7 @@ import com.shopcart.backend.entity.Product;
 import com.shopcart.backend.repository.ProductRepository;
 import com.shopcart.backend.repository.ReviewRepository;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ProductRestController {
     public Product getProduct(@PathVariable long product_id) {
     	return productRepository.findById(product_id).orElse(null);
     }
+
 
     @PostMapping
     public Product addProduct(@RequestBody Product product) {
