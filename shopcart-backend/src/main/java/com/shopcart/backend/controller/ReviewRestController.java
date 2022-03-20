@@ -33,7 +33,7 @@ public class ReviewRestController {
     }
 
     @PostMapping("/{product_id}")
-    public Review addReview(@RequestBody Review review, @PathVariable long product_id) {gi
+    public Review addReview(@RequestBody Review review, @PathVariable long product_id) {
     	reviewRepository.save(review);
         Product product = productRepository.findById(product_id).orElse(null);
         product.addReview_id(review.getId());
