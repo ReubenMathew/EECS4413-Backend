@@ -6,17 +6,19 @@ import com.shopcart.backend.entity.User;
 import com.shopcart.backend.repository.UserRepository;
 import com.shopcart.backend.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.Http2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -32,21 +34,30 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
 
-    @PostMapping("/authenticate")
-    public String generateToken(@Valid @RequestBody AuthRequest authRequest) throws Exception {
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<Map> generateToken(@Valid @RequestBody AuthRequest authRequest) throws Exception {
+        HashMap<String, String> responseMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
-            );
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+            responseMap.put("token", jwtUtils.generateToken(authRequest.getUserName()));
         } catch (UsernameNotFoundException e) {
-            throw new Exception("Username not found");
+            responseMap.put("error", "username not found");
+            status = HttpStatus.FORBIDDEN;
         } catch (BadCredentialsException e) {
-            throw new Exception("Invalid username/password");
+            responseMap.put("error", "invalid username/password");
+            status = HttpStatus.FORBIDDEN;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Authentication error");
+            responseMap.put("error", "authentication error");
+            status = HttpStatus.FORBIDDEN;
         }
-        return jwtUtils.generateToken(authRequest.getUserName());
+        return new ResponseEntity<>(responseMap, status);
+    }
+
+    @GetMapping("/users")
+    public List<User> listUsers() {
+        return new ArrayList<>(userRepository.findAll());
     }
 
     @PostMapping("/register")
