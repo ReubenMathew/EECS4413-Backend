@@ -35,9 +35,9 @@ public class ReviewRestController {
     @PostMapping
     public Review addReview(@RequestBody Review review) {
     	reviewRepository.save(review);
-        Product product = productRepository.findById(review.getProduct_id()gi).orElse(null);
+        Product product = productRepository.findById(review.getProduct_id()).orElse(null);
         product.addReview_id(review.getId());
-        productRepository.save(product);
+        productRepository.save(product);g
         return review;
     }
 
