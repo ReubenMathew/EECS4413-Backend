@@ -37,7 +37,7 @@ public class ReviewRestController {
     	reviewRepository.save(review);
         Product product = productRepository.findById(review.getProduct_id()).orElse(null);
         product.addReview_id(review.getId());
-        productRepository.save(product);g
+        productRepository.save(product);
         return review;
     }
 
