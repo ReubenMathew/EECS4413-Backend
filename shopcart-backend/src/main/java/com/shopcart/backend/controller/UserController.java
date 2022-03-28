@@ -33,7 +33,6 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
     @PostMapping(value = "/authenticate")
     public ResponseEntity<Map> generateToken(@Valid @RequestBody AuthRequest authRequest) throws Exception {
         HashMap<String, String> responseMap = new HashMap<>();
@@ -41,6 +40,10 @@ public class UserController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
             responseMap.put("token", jwtUtils.generateToken(authRequest.getUserName()));
+            User user = userRepository.findUserByUsername(authRequest.getUserName()).get();
+            responseMap.put("role", user.getRoleCode());
+            responseMap.put("email", user.getEmail());
+            responseMap.put("id", user.getId().toString());
         } catch (UsernameNotFoundException e) {
             responseMap.put("error", "username not found");
             status = HttpStatus.FORBIDDEN;
