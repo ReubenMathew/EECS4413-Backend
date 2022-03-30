@@ -1,11 +1,8 @@
 package com.shopcart.backend.entity;
 
 import java.sql.Date;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.CollectionTable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,7 +11,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -48,11 +44,9 @@ public class Order {
     @Column(name="status")
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Column(name="product_ids")
     @ElementCollection
-    @CollectionTable(name = "order_products")
-    @MapKeyColumn(name="product_id")
-    @Column(name="quantity")
-    Map<Long, Integer> products = new HashMap<Long, Integer>();
+    private List<Long> product_ids = new ArrayList<Long>();
     
 	public long getId() {
 		return id;
@@ -118,16 +112,16 @@ public class Order {
 		}
 	}
 
-	public void addProduct(long product_id, int quantity){
-		products.put(product_id, quantity);
-	}
+    public void addProduct_id(long product_id){
+    	product_ids.add(product_id);
+    }
 
-	public void removeProduct(long product_id){
-		products.remove(product_id);
-	}
+    public void removeProduct_id(long product_id){
+    	product_ids.remove(product_id);
+    }
 
-	public Map<Long, Integer> getProducts() {
-		return products;
+	public List<Long> getProduct_ids() {
+		return product_ids;
 	}
 
 	@Override
@@ -136,7 +130,8 @@ public class Order {
 			Order other = (Order) object;
 			return this.id == other.id && this.total == other.total && this.country.equals(other.country)
 					&& this.first_name.equals(other.first_name) && this.last_name.equals(other.last_name)
-					&& this.products.equals(other.products) && this.status.getValue() == other.status.getValue();
+					&& this.status.getValue() == other.status.getValue() && this.product_ids.containsAll(other.product_ids)
+					&& other.product_ids.containsAll(this.product_ids);
 		} else {
 			return false;
 		}

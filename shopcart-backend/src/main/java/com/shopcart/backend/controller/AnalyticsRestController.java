@@ -1,6 +1,7 @@
 package com.shopcart.backend.controller;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,7 @@ public class AnalyticsRestController {
 			"November",
 			"December"
 	};
-	
+
     private final OrderRepository orderRepository;
     private final VisitEventRepository visitEventRepository;
 
@@ -43,53 +44,44 @@ public class AnalyticsRestController {
         this.visitEventRepository = visitEventRepository;
     }
 
-	@GetMapping("report/monthly/items")
-    public String getMonthlyItemsSold() {
+	@GetMapping("monthly/items")
+    public Map getMonthlyItemsSold() {
+        HashMap<String, Integer> responseMap = new HashMap<>();
     	int[] quantities_sold = new int[12];
     	for(Order order : orderRepository.findAll()) {
     		Calendar cal = Calendar.getInstance();
     		cal.setTime(order.getDate());
     		int month = cal.get(Calendar.MONTH);
-        	for(Map.Entry<Long, Integer> entry : order.getProducts().entrySet()) {
-        		quantities_sold[month] += entry.getValue();
-        	}
+    		quantities_sold[month] += order.getProduct_ids().size();
     	}
 
     	// Return Monthly Items Sold
-    	StringBuilder result = new StringBuilder();
-    	result.append("{");
     	for(int i = 0; i < months.length; i ++) {
-    		result.append("\"" + months[i] + "\":");
-    		result.append(quantities_sold[i]);
-			if(i < months.length - 1) result.append(", ");
+    		responseMap.put(months[i], quantities_sold[i]);
     	}
-    	result.append("}");
-    	return result.toString();
+    	return responseMap;
     }
 
-	@GetMapping("report/website/usage")
-    public String getWebsiteUsage() {
+	@GetMapping("website/usage")
+    public Map getWebsiteUsage() {
+        HashMap<String, Integer> responseMap = new HashMap<>();
 		int view_hits = visitEventRepository.findByEvent(Event.VIEW).size();
 		int cart_hits = visitEventRepository.findByEvent(Event.CART).size();
 		int purchase_hits = visitEventRepository.findByEvent(Event.PURCHASE).size();
 
     	// Return Website Usage
-    	StringBuilder result = new StringBuilder();
-    	result.append("{\"view\":");
-    	result.append(view_hits);
-    	result.append(", \"cart\":");
-    	result.append(cart_hits);
-    	result.append(", \"purchase\":");
-    	result.append(purchase_hits + "}");
-    	return result.toString();
+    	responseMap.put("view", view_hits);
+    	responseMap.put("cart", cart_hits);
+    	responseMap.put("purchase", purchase_hits);
+    	return responseMap;
 	}
 
-	@PostMapping("report/website/usage")
+	@PostMapping("website/usage")
     public void addPageVisit(@RequestBody VisitEvent visitEvent) {
 		visitEventRepository.save(visitEvent);
 	}
 	
-	@DeleteMapping("report/website/usage")
+	@DeleteMapping("website/usage")
     public void deletePageVisit(@RequestBody VisitEvent visitEvent) {
 		visitEventRepository.delete(visitEvent);
 	}
