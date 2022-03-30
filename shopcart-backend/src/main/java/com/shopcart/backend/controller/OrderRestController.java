@@ -1,12 +1,14 @@
 package com.shopcart.backend.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,37 +60,46 @@ public class OrderRestController {
     }
 
     @PostMapping("/process")
-    public String processOrder(@RequestBody Order order) {
-    	for(Map.Entry<Long, Integer> entry : order.getProducts().entrySet()) {
-    		Product product = productRepository.findById(entry.getKey()).orElse(null);
-    		if(!(product != null && entry.getValue() <= product.getQuantity())) { // Too Many Items
-            	return "{\"Order\":\"Items Added Exceeds Quantity In Stock\"}";	
+    public Map processOrder(@RequestBody Order order) {
+        HashMap<String, String> responseMap = new HashMap<>();
+        if(order.getProduct_ids().size() == 0) {
+			responseMap.put("Order", "No Items In Cart");
+			return responseMap;
+        }
+    	for(Long id : order.getProduct_ids()) {
+    		Product product = productRepository.findById(id).orElse(null);
+    		if(product == null) {
+    			responseMap.put("Order", "An Item In The Cart Dosent Exist");
+    			return responseMap;
     		}
     	}
 		order.setStatus(1); // PROCESSING
 		orderRepository.save(order);
-    	return "{\"Order\":\"Sucessfully Submitted\", " 
-				+ "\"id\":" + order.getId() + ", " 
-				+ "\"status\":" + order.getStatus() + "}";	
+		responseMap.put("Order", "Sucessfully Submitted");
+		responseMap.put("id", "" + order.getId());
+		responseMap.put("status", "" + order.getStatus());
+		return responseMap;
     }
 
     @PutMapping("/submit")
-    public String confirmOrder(@RequestBody Order order) {
-    	if(!orderRepository.findById(order.getId()).orElse(null).equals(order)) return "{\"Order\":\"Order Not Found\"}";
-    	if(order.getStatus() != 1) return "{\"Order\":\"Order Already Paid For\"}";	
+    public Map confirmOrder(@RequestBody Order order) {
+        HashMap<String, String> responseMap = new HashMap<>();
+        Order foundOrder = orderRepository.findById(order.getId()).orElse(null);
+        if(foundOrder == null || !foundOrder.equals(order)) {
+    		responseMap.put("Order", "Order Not Found");
+    		return responseMap;
+    	} else if(order.getStatus() != 1) {
+    		responseMap.put("Order", "Order Already Paid For");
+    		return responseMap;
+    	}
     	if(dummyPaymentService.pay()) { // Successful Payment
-    		for(Map.Entry<Long, Integer> entry : order.getProducts().entrySet()) {
-        		Product product = productRepository.findById(entry.getKey()).orElse(null);
-        		if(product != null) { // Deduct Quantity In Stock
-        			product.setQuantity(product.getQuantity() - entry.getValue());
-        			productRepository.save(product);
-        		}
-    		}
     		order.setStatus(2); // PAID
     		orderRepository.save(order);
-        	return "{\"Order\":\"Order Successfully Completed\"}";
+    		responseMap.put("Order", "Order Successfully Completed");
+    		return responseMap;
     	} else { // Unsuccessful Payment
-        	return "{\"Order\":\"Credit Card Authorization Failed\"}";	
+    		responseMap.put("Order", "Credit Card Authorization Failed");
+    		return responseMap;    			
     	}
     }
 

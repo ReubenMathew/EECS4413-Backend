@@ -32,8 +32,6 @@ public class Product {
     private String color;
     @Column(name="price")
     private @NotBlank float price;
-    @Column(name="quantity")
-    private @NotBlank int quantity;
     @Column(name="review_ids")
     @ElementCollection
     private List<Long> review_ids = new ArrayList<Long>();
@@ -97,14 +95,6 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public void addReview_id(long review_id){
