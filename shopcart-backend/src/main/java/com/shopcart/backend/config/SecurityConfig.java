@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/products").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/products/{product_id}").permitAll()
                 .antMatchers("/api/reviews/**").permitAll()
+                .antMatchers("/api/analytics/**").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().and().sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
