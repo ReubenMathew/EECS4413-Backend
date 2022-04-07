@@ -44,7 +44,7 @@ public class AnalyticsRestController {
         this.visitEventRepository = visitEventRepository;
     }
 
-	@GetMapping("monthly/items")
+	@GetMapping("/monthly/items")
     public Map getMonthlyItemsSold() {
         HashMap<String, Integer> responseMap = new HashMap<>();
     	int[] quantities_sold = new int[12];
@@ -62,7 +62,7 @@ public class AnalyticsRestController {
     	return responseMap;
     }
 
-	@GetMapping("website/usage")
+	@GetMapping("/website/usage")
     public Map getWebsiteUsage() {
         HashMap<String, Integer> responseMap = new HashMap<>();
 		int view_hits = visitEventRepository.findByEvent(Event.VIEW).size();
@@ -76,12 +76,12 @@ public class AnalyticsRestController {
     	return responseMap;
 	}
 
-	@PostMapping("website/usage")
+	@PostMapping("/website/usage")
     public void addPageVisit(@RequestBody VisitEvent visitEvent) {
 		visitEventRepository.save(visitEvent);
 	}
 	
-	@DeleteMapping("website/usage")
+	@DeleteMapping("/website/usage")
     public void deletePageVisit(@RequestBody VisitEvent visitEvent) {
 		visitEventRepository.delete(visitEvent);
 	}
