@@ -15,6 +15,69 @@ PSCALE_PASSWORD=<MySQL_DB_PASSWORD>
 5. The backend is successfully deployed
 
 ## API Endpoints
+### Analytics
+All analytics endpoints are prefixed with `/api/analytics`
+
+- `GET /monthly/items`
+  - returns JSON object mapping months to items sold
+- `GET /website/usage`
+  - returns JSON object containing page view Analytics
+- `POST /website/usage`
+  - accepts JSON object about where the page visit happened
+- `DELETE /website/usage`
+  - deletes website visit event
+
+### Orders
+All ordering endpoints are prefixed with `/api/orders`
+
+- `GET`
+  - returns all orders regardless of status in a JSON payload
+- `GET /{order_id}`
+  - returns order as JSON object
+- `DELETE /{order_id}`
+  - deletes order object from database from a request parameter order-id
+- `POST /process`
+  - accepts JSON payload of an order and adds that order to database
+- `PUT /submit`
+  - accepts JSON payload of an order and changes its status based on payment status to `/DummyPaymentService`
+
+### Products
+All products endpoints are prefixed with `/api/products`
+
+- `GET`
+  - returns JSON list of all product objects in database
+- `GET /{product_id}`
+  - returns product object details from a given product-id
+- `POST`
+  - accepts JSON object of a product and adds it to database
+- `PUT /{product_id}`
+  - accepts JSON object to update existing product objects
+- `DELETE /{product_id}`
+  - deletes product object from database by product-id
+
+### Reviews
+All reviews endpoints are prefixed with `/api/reviews`
+
+- `GET /product/{product_id}`
+  - gets reviews for a given product-id
+- `GET /{review_id}`
+  - gets review object for a given review-id
+- `POST`
+  - accepts a review JSON object and persists it to the database
+- `PUT /{review_id}`
+  - updates review based on a given review-id
+- `DELETE /{review_id}`
+  - deletes the review object based on a given review-id
+
+### Users
+All authentication and user controller endpoints are prefixed with `/api`
+
+- `POST /authenticate`
+  - accepts an AuthRequest object containing username and password, returns a JWT token on successful authentication
+- `GET /users`
+  - returns a JSON list of all user objects in database
+- `POST /register`
+  - accepts a `RegistrationRequest` object which persists the to-be registered user in the database
 
 ## Populate Database with Dummy Data
 ```sql
