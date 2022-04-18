@@ -94,13 +94,13 @@ CREATE TABLE `visit_event` (
 INSERT INTO users (email, password, role_code, username) VALUES ("jim123@hotmail.com", "83rcRwJIYCXUBqE6aRdX", "ADMIN", "jim123");
 INSERT INTO users (email, password, role_code, username) VALUES ("eric4566@hotmail.com", "123456password", "USER", "eric231");
 
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "blue", "Ultra thin shirt", "", 56.99, "Nike Shirt", 1);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "black", "Ultra thin oversized shirt", "", 56.99, "Nike Oversized Shirt", 2);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "green", "Ultra thin tank top", "", 56.99, "Nike TankTop", 3);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "grey", "Thick pants", "", 79.99, "Nike Pants", 1);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "black", "Thick tech pants", "", 79.99, "Nike Tech Pants", 2);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "white", "Thick cargo pants", "", 79.99, "Nike Cargo Pants", 3);
-INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("adidas", "accessories", "white", "Elastic", "", 19.99, "Adidas Headband", 1);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "blue", "Ultra thin shirt", "", 56.99, "Nike Shirt", XXS);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "black", "Ultra thin oversized shirt", "", 56.99, "Nike Oversized Shirt", XS);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "green", "Ultra thin tank top", "", 56.99, "Nike TankTop", S);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "grey", "Thick pants", "", 79.99, "Nike Pants", XXS);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "black", "Thick tech pants", "", 79.99, "Nike Tech Pants", XS);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "bottom", "white", "Thick cargo pants", "", 79.99, "Nike Cargo Pants", S);
+INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("adidas", "accessories", "white", "Elastic", "", 19.99, "Adidas Headband", XS);
 
 INSERT INTO reviews (description, product_id, rating, title) VALUES ("kinda liked it", 1, 3, "Okay product");
 INSERT INTO reviews (description, product_id, rating, title) VALUES ("liked it", 1, 4, "Good product");
