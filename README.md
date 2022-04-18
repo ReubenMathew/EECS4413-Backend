@@ -153,10 +153,6 @@ CREATE TABLE `visit_event` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Populate Data Into The Tables
-INSERT INTO users (email, password, role_code, username) VALUES ("jim123@hotmail.com", "83rcRwJIYCXUBqE6aRdX", "ADMIN", "jim123");
-INSERT INTO users (email, password, role_code, username) VALUES ("eric4566@hotmail.com", "123456password", "USER", "eric231");
-
 INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "blue", "Ultra thin shirt", "", 56.99, "Nike Shirt", "XXS");
 INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "black", "Ultra thin oversized shirt", "", 56.99, "Nike Oversized Shirt", "XS");
 INSERT INTO products (brand, category, color, description, image_url, price, product_name, size) VALUES ("nike", "top", "green", "Ultra thin tank top", "", 56.99, "Nike TankTop", "S");
